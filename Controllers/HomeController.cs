@@ -59,13 +59,13 @@ namespace WebFrontEnd.Controllers
             return View();
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(UserModel login)
         {
             try
             {
-                //var antiForgeryToken = HttpContext.Request.Form["__RequestVerificationToken"];
-                //_httpClient.DefaultRequestHeaders.Add("RequestVerificationToken", (string?)antiForgeryToken);
+                var antiForgeryToken = HttpContext.Request.Form["__RequestVerificationToken"];
+                _httpClient.DefaultRequestHeaders.Add("RequestVerificationToken", (string?)antiForgeryToken);
                 var response = await _httpClient.PostAsJsonAsync("api/Users", login);
 
                 
