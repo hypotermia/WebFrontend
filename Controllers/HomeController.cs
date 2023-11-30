@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebFrontEnd.Models;
 using System.Text.Json;
 using System.Net;
+using System.Reflection;
 
 namespace WebFrontEnd.Controllers
 {
@@ -27,12 +28,18 @@ namespace WebFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginViewModel login)
         {
-            //give up for register and login !!! 
             try
             {
                 var response = await _httpClient.PostAsJsonAsync("api/Users/login", login);
                 response.EnsureSuccessStatusCode();
-                    return RedirectToAction("Index","Task");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Task");
+                }
+                else
+                {
+                    return View(login);
+                }
                 
             }
             catch (HttpRequestException ex)
@@ -46,42 +53,42 @@ namespace WebFrontEnd.Controllers
                 return View(login);
             }
         }
+        [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Register(LoginViewModel login)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(UserModel login)
         {
             try
             {
-                //tolong ganti URL sesuai dengan localhost sendiri
-                string apiUrl = "https://localhost:7113/api/Users";
+                //var antiForgeryToken = HttpContext.Request.Form["__RequestVerificationToken"];
+                //_httpClient.DefaultRequestHeaders.Add("RequestVerificationToken", (string?)antiForgeryToken);
+                var response = await _httpClient.PostAsJsonAsync("api/Users", login);
 
-                var requestBody = new
-                {
-                    Username = login.username,
-                    Password = login.password
-                };
-
-                var jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestBody));
-                jsonContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 
-                ViewBag.ShowSuccessModal = true;
-                return RedirectToAction("Index");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // Handle registration failure
+                    ModelState.AddModelError(string.Empty, "Registration failed. Please try again."); // You can customize the error message
+                    return View(login);
+                }
             }
             catch (HttpRequestException ex)
             {
+                // Handle connection issues
                 ViewBag.ErrorMessage = $"Error connecting to the API: {ex.Message}";
-                return View(login);
-            }
-            catch (JsonException ex)
-            {
-                ViewBag.ErrorMessage = $"Error serializing JSON: {ex.Message}";
                 return View(login);
             }
             catch (Exception ex)
             {
+                // Handle other exceptions
                 ViewBag.ErrorMessage = $"An error occurred: {ex.Message}";
                 return View(login);
             }
