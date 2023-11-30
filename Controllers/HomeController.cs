@@ -32,7 +32,7 @@ namespace WebFrontEnd.Controllers
             {
                 var response = await _httpClient.PostAsJsonAsync("api/Users/login", login);
                 response.EnsureSuccessStatusCode();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index","Task");
                 
             }
             catch (HttpRequestException ex)
