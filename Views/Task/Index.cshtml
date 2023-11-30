@@ -1,0 +1,34 @@
+﻿@model List<TaskModel>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Task" asp-action="Create">Add New</a>
+        </li>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Tugas</th>
+            <th>Description</th>
+            <th>Tanggal Deadline</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Nama</td>
+                <td>@task.Tugas</td>
+                <td>@task.Deskripsi</td>
+                <td>@task.TanggalDeadline</td>
+                <td>
+                @Html.ActionLink("Edit", "Edit", new { id = task.Id }) |
+                @Html.ActionLink("Detail", "Detail", new { id = task.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = task.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

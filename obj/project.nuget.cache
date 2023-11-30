@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "iO3CCcp8LI8yHSr3GtEwJ5z/sTUXuL83QqEzKKkPkHybfxL1ZQ+z2j1lgYClTj+eoBF2VmKQ4fge2WrfhgsOnA==",
+  "success": true,
+  "projectFilePath": "E:\\LearnProject\\WebFrontEnd\\WebFrontEnd.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ZAKKI\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
